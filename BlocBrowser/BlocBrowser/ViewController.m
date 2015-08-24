@@ -40,6 +40,10 @@
     self.urlTextField.backgroundColor = [UIColor colorWithWhite:220/255.0f alpha:1];
     self.urlTextField.delegate = self;
     
+    // Init web view
+    self.webView = [[WKWebView alloc] init];
+    self.webView.navigationDelegate = self;
+    
     // Init control buttons
     self.backButton = [UIButton buttonWithType:UIButtonTypeSystem];
     self.forwardButton = [UIButton buttonWithType:UIButtonTypeSystem];
@@ -57,10 +61,6 @@
     [self.forwardButton addTarget:self.webView action:@selector(goForward) forControlEvents:UIControlEventTouchUpInside];
     [self.stopButton addTarget:self.webView action:@selector(stopLoading) forControlEvents:UIControlEventTouchUpInside];
     [self.reloadButton addTarget:self.webView action:@selector(reload) forControlEvents:UIControlEventTouchUpInside];
-    
-    // Init web view
-    self.webView = [[WKWebView alloc] init];
-    self.webView.navigationDelegate = self;
     
     // add subviews
     for (UIView *eachView in @[self.webView,
