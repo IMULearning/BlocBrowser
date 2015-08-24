@@ -81,7 +81,9 @@
     self.urlTextField.frame = CGRectMake(0, 0, width, textFieldHeight);
     self.webView.frame = CGRectMake(0, CGRectGetMaxY(self.urlTextField.frame), width, browserHeight);
     
-    self.toolbar.frame = CGRectMake(20, 100, 280, 60);
+    CGFloat toolbarWidth = 0.8 * CGRectGetWidth(self.view.bounds);
+    CGFloat toolbarX = (CGRectGetWidth(self.view.bounds) - toolbarWidth) / 2;
+    self.toolbar.frame = CGRectMake(toolbarX, 100, toolbarWidth, 60);
 }
 
 - (void)viewDidLoad {
