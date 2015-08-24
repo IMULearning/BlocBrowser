@@ -36,7 +36,7 @@
     self.urlTextField.returnKeyType = UIReturnKeyDone;
     self.urlTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
     self.urlTextField.autocorrectionType = UITextAutocorrectionTypeNo;
-    self.urlTextField.placeholder = NSLocalizedString(@"Website URL", @"Placeholder text for web browser URL field");
+    self.urlTextField.placeholder = NSLocalizedString(@"Website URL or Search Query", @"Placeholder text for web browser URL field");
     self.urlTextField.backgroundColor = [UIColor colorWithWhite:220/255.0f alpha:1];
     self.urlTextField.delegate = self;
     
@@ -118,6 +118,11 @@
     [textField resignFirstResponder];
     
     NSString *inputedText = textField.text;
+    if ([inputedText containsString:@" "]) {
+        inputedText = [inputedText stringByReplacingOccurrencesOfString:@" " withString:@"+"];
+        inputedText = [NSString stringWithFormat:@"http://google.com/search?q=%@", inputedText];
+    }
+    
     NSURL *url = [NSURL URLWithString:inputedText];
     
     if (!url.scheme) {
