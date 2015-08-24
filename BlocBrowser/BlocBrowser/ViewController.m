@@ -81,7 +81,7 @@
     self.urlTextField.frame = CGRectMake(0, 0, width, textFieldHeight);
     self.webView.frame = CGRectMake(0, CGRectGetMaxY(self.urlTextField.frame), width, browserHeight);
     
-    self.toolbar.frame = CGRectMake(20, 100, 280, 60);
+    self.toolbar.frame = CGRectMake(20, 100, 280, 150);
 }
 
 - (void)viewDidLoad {
@@ -203,6 +203,17 @@
     
     if (CGRectContainsRect(self.view.bounds, potentialNewFrame)) {
         toolbar.frame = potentialNewFrame;
+    }
+}
+
+- (void)floatingToolbar:(AwesomeFloatingToolbar *)toolbar didTryToPinchWithScale:(CGFloat)scale {
+    CGFloat newWidth = CGRectGetWidth(toolbar.frame) * scale;
+    CGFloat newHeight = CGRectGetHeight(toolbar.frame) * scale;
+    
+    CGRect potentialNewFrame = CGRectMake(toolbar.frame.origin.x, toolbar.frame.origin.y, newWidth, newHeight);
+    
+    if (CGRectContainsRect(self.view.bounds, potentialNewFrame)) {
+        [toolbar setFrame:potentialNewFrame];
     }
 }
 

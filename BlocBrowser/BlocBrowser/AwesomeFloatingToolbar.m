@@ -8,14 +8,22 @@
 
 #import "AwesomeFloatingToolbar.h"
 
+#define color1 [UIColor colorWithRed:199/255.0 green:158/255.0 blue:203/255.0 alpha:1]
+#define color2 [UIColor colorWithRed:255/255.0 green:105/255.0 blue:97/255.0 alpha:1]
+#define color3 [UIColor colorWithRed:222/255.0 green:165/255.0 blue:164/255.0 alpha:1]
+#define color4 [UIColor colorWithRed:255/255.0 green:179/255.0 blue:71/255.0 alpha:1]
+
+@class ViewController;
+
 @interface AwesomeFloatingToolbar ()
 
 @property (nonatomic, strong) NSArray *currentTitles;
-@property (nonatomic, strong) NSArray *colors;
+@property (nonatomic, strong) NSMutableArray *colors;
 @property (nonatomic, strong) NSArray *labels;
-@property (nonatomic, weak) UILabel *currentLabel;
-@property (nonatomic, strong) UITapGestureRecognizer *tapGesture;
+@property (nonatomic, weak) UIButton *currentLabel;
 @property (nonatomic, strong) UIPanGestureRecognizer *panGesture;
+@property (nonatomic, strong) UIPinchGestureRecognizer *pinchGesture;
+@property (nonatomic, strong) UILongPressGestureRecognizer *longPressGesture;
 
 @end
 
@@ -27,40 +35,41 @@
     if (self) {
         self.currentTitles = titles;
         
-        self.colors = @[[UIColor colorWithRed:199/255.0 green:158/255.0 blue:203/255.0 alpha:1],
-                        [UIColor colorWithRed:255/255.0 green:105/255.0 blue:97/255.0 alpha:1],
-                        [UIColor colorWithRed:222/255.0 green:165/255.0 blue:164/255.0 alpha:1],
-                        [UIColor colorWithRed:255/255.0 green:179/255.0 blue:71/255.0 alpha:1]];
+        self.colors = [@[color1, color2, color3, color4] mutableCopy];
         
         NSMutableArray *labelArray = [[NSMutableArray alloc] init];
         for (NSString *currentTitle in self.currentTitles) {
-            UILabel *label = [[UILabel alloc] init];
+            UIButton *label = [[UIButton alloc] init];
+            
             label.userInteractionEnabled = NO;
             label.alpha = 0.25;
             
             NSUInteger currentTitleIndex = [self.currentTitles indexOfObject:currentTitle];
             NSString *titleForThisLabel = [self.currentTitles objectAtIndex:currentTitleIndex];
-            UIColor *colorForThisLabel = [self.colors objectAtIndex:currentTitleIndex];
             
-            label.textAlignment = NSTextAlignmentCenter;
-            label.font = [UIFont systemFontOfSize:10];
-            label.text = titleForThisLabel;
-            label.backgroundColor = colorForThisLabel;
-            label.textColor = [UIColor whiteColor];
+            label.titleLabel.textAlignment = NSTextAlignmentCenter;
+            label.titleLabel.font = [UIFont systemFontOfSize:15];
+            label.titleLabel.textColor = [UIColor whiteColor];
+            [label setTitle:titleForThisLabel forState:UIControlStateNormal];
+            
+            [label addTarget:self action:@selector(buttonTapped:) forControlEvents:UIControlEventTouchUpInside];
             
             [labelArray addObject:label];
         }
         self.labels = labelArray;
+        [self rotateColorAndAssign];
         
-        for (UILabel *label in self.labels) {
+        for (UIButton *label in self.labels) {
             [self addSubview:label];
         }
         
         // gesture recognizer setup
-        self.tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapFired:)];
-        [self addGestureRecognizer:self.tapGesture];
         self.panGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(panFired:)];
         [self addGestureRecognizer:self.panGesture];
+        self.pinchGesture = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(pinchFired:)];
+        [self addGestureRecognizer:self.pinchGesture];
+        self.longPressGesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPressFired:)];
+        [self addGestureRecognizer:self.longPressGesture];
     }
     
     return self;
@@ -90,6 +99,17 @@
     }
 }
 
+- (void) rotateColorAndAssign {
+    UIColor *firstColor = [self.colors firstObject];
+    [self.colors removeObject:firstColor];
+    [self.colors addObject:firstColor];
+    
+    NSUInteger index = 0;
+    for (UILabel *label in self.labels) {
+        label.backgroundColor = [self.colors objectAtIndex:index++];
+    }
+}
+
 #pragma mark - Button Enabling
 
 - (void) setEnabled: (BOOL) enabled forButtonWithTitle: (NSString *) title {
@@ -104,19 +124,6 @@
 
 #pragma mark - Gesture Handling
 
-- (void) tapFired:(UITapGestureRecognizer *)recognizer {
-    if (recognizer.state == UIGestureRecognizerStateRecognized) {
-        CGPoint location = [recognizer locationInView:self];
-        UIView *tappedView = [self hitTest:location withEvent:nil];
-        
-        if ([self.labels containsObject:tappedView]) {
-            if ([self.delegate respondsToSelector:@selector(floatingToolbar:didSelectButtonWithTitle:)]) {
-                [self.delegate floatingToolbar:self didSelectButtonWithTitle:((UILabel *) tappedView).text];
-            }
-        }
-    }
-}
-
 - (void) panFired:(UIPanGestureRecognizer *)recognizer {
     if (recognizer.state == UIGestureRecognizerStateRecognized) {
         CGPoint translation = [recognizer translationInView:self];
@@ -126,6 +133,30 @@
         }
         
         [recognizer setTranslation:CGPointZero inView:self];
+    }
+}
+
+- (void) pinchFired:(UIPinchGestureRecognizer *)recognizer {
+    if (recognizer.state == UIGestureRecognizerStateRecognized) {
+        if ([self.delegate respondsToSelector:@selector(floatingToolbar:didTryToPinchWithScale:)]) {
+            [self.delegate floatingToolbar:self didTryToPinchWithScale:recognizer.scale];
+        }
+        
+        recognizer.scale = 1;
+    }
+}
+
+- (void) longPressFired:(UILongPressGestureRecognizer *)recognizer {
+    if (recognizer.state == UIGestureRecognizerStateRecognized) {
+        [self rotateColorAndAssign];
+    }
+}
+
+#pragma mark - Button Tap Handling
+
+- (void) buttonTapped:(UIButton *)button {
+    if ([self.delegate respondsToSelector:@selector(floatingToolbar:didSelectButtonWithTitle:)]) {
+        [self.delegate floatingToolbar:self didSelectButtonWithTitle:button.titleLabel.text];
     }
 }
 
