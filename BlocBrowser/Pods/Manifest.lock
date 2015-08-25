@@ -1,0 +1,10 @@
+PODS:
+  - RZDataBinding (2.0.2)
+
+DEPENDENCIES:
+  - RZDataBinding
+
+SPEC CHECKSUMS:
+  RZDataBinding: cee51c9865c82e37adc4639fe408a6f81abe79ad
+
+COCOAPODS: 0.38.2

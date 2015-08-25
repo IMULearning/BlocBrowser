@@ -8,6 +8,7 @@
 
 #import "ViewController.h"
 #import "AwesomeFloatingToolbar.h"
+#import <RZDataBinding/RZDataBinding.h>
 #import <WebKit/WebKit.h>
 
 #define kWebBrowserBackString NSLocalizedString(@"Back", @"Back command")
@@ -19,6 +20,7 @@
 
 @property (nonatomic, strong) WKWebView *webView;
 @property (nonatomic, strong) UITextField *urlTextField;
+@property (nonatomic, strong) NSString *urlText;
 @property (nonatomic, strong) UIActivityIndicatorView *activityIndicator;
 @property (nonatomic, strong) AwesomeFloatingToolbar *toolbar;
 
@@ -43,9 +45,23 @@
     self.urlTextField.backgroundColor = [UIColor colorWithWhite:220/255.0f alpha:1];
     self.urlTextField.delegate = self;
     
+    // Bind urlText with the text in urlTextField
+    [self rz_bindKey:RZDB_KP_OBJ(self, urlText)
+           toKeyPath:RZDB_KP_OBJ(self.urlTextField, text)
+            ofObject:self.urlTextField];
+    
     // Init web view
     self.webView = [[WKWebView alloc] init];
     self.webView.navigationDelegate = self;
+    
+    // Bind web view title to navigation's title
+    [self rz_bindKey:RZDB_KP_OBJ(self, title)
+           toKeyPath:RZDB_KP_OBJ(self.webView, title)
+            ofObject:self.webView
+       withTransform:^id(id value) {
+           NSString *title = [value copy];
+           return [title length] ? title : self.webView.URL.absoluteString;
+    }];
     
     // Init control buttons
     self.toolbar = [[AwesomeFloatingToolbar alloc] initWithFourTitles:@[kWebBrowserBackString,
@@ -63,13 +79,6 @@
     
     self.view = mainView;
 }
-
-//- (void) loadWikipedia {
-//    NSString *urlString = @"http://wikipedia.org";
-//    NSURL *url = [NSURL URLWithString:urlString];
-//    NSURLRequest *urlRequest = [NSURLRequest requestWithURL:url];
-//    [self.webView loadRequest:urlRequest];
-//}
 
 - (void) viewWillLayoutSubviews {
     [super viewWillLayoutSubviews];
@@ -99,11 +108,10 @@
 - (BOOL) textFieldShouldReturn:(UITextField *)textField {
     [textField resignFirstResponder];
     
-    NSString *inputedText = textField.text;
-    NSURL *url = [NSURL URLWithString:inputedText];
+    NSURL *url = [NSURL URLWithString:self.urlText];
     
     if (!url.scheme) {
-        url = [NSURL URLWithString:[NSString stringWithFormat:@"http://%@", inputedText]];
+        url = [NSURL URLWithString:[NSString stringWithFormat:@"http://%@", self.urlText]];
     }
     
     if (url) {
@@ -149,13 +157,6 @@
 #pragma mark - Misc
 
 - (void) updateButtonsAndTitle {
-    NSString *title = [self.webView.title copy];
-    if ([title length]) {
-        self.title = title;
-    } else {
-        self.title = self.webView.URL.absoluteString;
-    }
-    
     if (self.webView.isLoading) {
         [self.activityIndicator startAnimating];
     } else {

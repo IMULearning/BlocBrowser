@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		67A367011356DBE75CBE57AA /* libPods-BlocBrowser.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CF17A4535B8A9D71BDA56EB2 /* libPods-BlocBrowser.a */; };
 		9A35553E1B8B7B55003FBFD1 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A35553D1B8B7B55003FBFD1 /* main.m */; };
 		9A3555411B8B7B55003FBFD1 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A3555401B8B7B55003FBFD1 /* AppDelegate.m */; };
 		9A3555441B8B7B55003FBFD1 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A3555431B8B7B55003FBFD1 /* ViewController.m */; };
@@ -27,6 +28,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		25E2CD9B85998EDDB9E7ECE5 /* Pods-BlocBrowser.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BlocBrowser.debug.xcconfig"; path = "Pods/Target Support Files/Pods-BlocBrowser/Pods-BlocBrowser.debug.xcconfig"; sourceTree = "<group>"; };
 		9A3555381B8B7B55003FBFD1 /* BlocBrowser.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BlocBrowser.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9A35553C1B8B7B55003FBFD1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9A35553D1B8B7B55003FBFD1 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -41,6 +43,9 @@
 		9A3555571B8B7B55003FBFD1 /* BlocBrowserTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BlocBrowserTests.m; sourceTree = "<group>"; };
 		9A3555611B8BB550003FBFD1 /* AwesomeFloatingToolbar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AwesomeFloatingToolbar.h; sourceTree = "<group>"; };
 		9A3555621B8BB550003FBFD1 /* AwesomeFloatingToolbar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AwesomeFloatingToolbar.m; sourceTree = "<group>"; };
+		9AB7CF1B1B8BF52A00D01AC9 /* RZDataBinding.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RZDataBinding.framework; path = "Pods/../build/Debug-iphoneos/RZDataBinding.framework"; sourceTree = "<group>"; };
+		A66C1B48002F4CA27859788D /* Pods-BlocBrowser.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BlocBrowser.release.xcconfig"; path = "Pods/Target Support Files/Pods-BlocBrowser/Pods-BlocBrowser.release.xcconfig"; sourceTree = "<group>"; };
+		CF17A4535B8A9D71BDA56EB2 /* libPods-BlocBrowser.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-BlocBrowser.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -48,6 +53,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				67A367011356DBE75CBE57AA /* libPods-BlocBrowser.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -61,12 +67,32 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		8A70D8C2CC8E031BB2B01107 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				9AB7CF1B1B8BF52A00D01AC9 /* RZDataBinding.framework */,
+				CF17A4535B8A9D71BDA56EB2 /* libPods-BlocBrowser.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		92822CA87C5E356D33BCF3FA /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				25E2CD9B85998EDDB9E7ECE5 /* Pods-BlocBrowser.debug.xcconfig */,
+				A66C1B48002F4CA27859788D /* Pods-BlocBrowser.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 		9A35552F1B8B7B55003FBFD1 = {
 			isa = PBXGroup;
 			children = (
 				9A35553A1B8B7B55003FBFD1 /* BlocBrowser */,
 				9A3555541B8B7B55003FBFD1 /* BlocBrowserTests */,
 				9A3555391B8B7B55003FBFD1 /* Products */,
+				92822CA87C5E356D33BCF3FA /* Pods */,
+				8A70D8C2CC8E031BB2B01107 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -128,9 +154,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 9A35555B1B8B7B55003FBFD1 /* Build configuration list for PBXNativeTarget "BlocBrowser" */;
 			buildPhases = (
+				308A7B91BE61049F93414E61 /* Check Pods Manifest.lock */,
 				9A3555341B8B7B55003FBFD1 /* Sources */,
 				9A3555351B8B7B55003FBFD1 /* Frameworks */,
 				9A3555361B8B7B55003FBFD1 /* Resources */,
+				F7AC0E47AB3DD3D89320F846 /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -214,6 +242,39 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		308A7B91BE61049F93414E61 /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		F7AC0E47AB3DD3D89320F846 /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-BlocBrowser/Pods-BlocBrowser-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		9A3555341B8B7B55003FBFD1 /* Sources */ = {
@@ -341,8 +402,13 @@
 		};
 		9A35555C1B8B7B55003FBFD1 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 25E2CD9B85998EDDB9E7ECE5 /* Pods-BlocBrowser.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/build/Debug-iphoneos",
+				);
 				INFOPLIST_FILE = BlocBrowser/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -351,8 +417,13 @@
 		};
 		9A35555D1B8B7B55003FBFD1 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = A66C1B48002F4CA27859788D /* Pods-BlocBrowser.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/build/Debug-iphoneos",
+				);
 				INFOPLIST_FILE = BlocBrowser/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -361,6 +432,7 @@
 		};
 		9A35555F1B8B7B55003FBFD1 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 25E2CD9B85998EDDB9E7ECE5 /* Pods-BlocBrowser.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				FRAMEWORK_SEARCH_PATHS = (
@@ -380,6 +452,7 @@
 		};
 		9A3555601B8B7B55003FBFD1 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = A66C1B48002F4CA27859788D /* Pods-BlocBrowser.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				FRAMEWORK_SEARCH_PATHS = (
