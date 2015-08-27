@@ -207,13 +207,11 @@
 }
 
 - (void)floatingToolbar:(AwesomeFloatingToolbar *)toolbar didTryToPinchWithScale:(CGFloat)scale {
-    CGFloat newWidth = CGRectGetWidth(toolbar.frame) * scale;
-    CGFloat newHeight = CGRectGetHeight(toolbar.frame) * scale;
-    
-    CGRect potentialNewFrame = CGRectMake(toolbar.frame.origin.x, toolbar.frame.origin.y, newWidth, newHeight);
-    
-    if (CGRectContainsRect(self.view.bounds, potentialNewFrame)) {
-        [toolbar setFrame:potentialNewFrame];
+    UIView *testView = [[UIView alloc] init];
+    testView.frame = toolbar.frame;
+    testView.transform = CGAffineTransformMakeScale(scale, scale);
+    if (CGRectContainsRect(self.view.bounds, testView.frame)) {
+        toolbar.transform = CGAffineTransformMakeScale(scale, scale);
     }
 }
 

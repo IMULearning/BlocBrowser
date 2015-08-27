@@ -76,27 +76,31 @@
 }
 
 - (void) layoutSubviews {
-    for (UILabel *label in self.labels) {
-        NSUInteger index = [self.labels indexOfObject:label];
-        
-        CGFloat labelHeight = CGRectGetHeight(self.bounds) / 2;
-        CGFloat labelWidth = CGRectGetWidth(self.bounds) / 2;
-        CGFloat labelX = 0, labelY = 0;
-        
-        if (index < 2) {
-            labelY = 0;
-        } else {
-            labelY = labelHeight;
+    static dispatch_once_t once_token;
+    
+    dispatch_once(&once_token, ^{
+        for (UILabel *label in self.labels) {
+            NSUInteger index = [self.labels indexOfObject:label];
+            
+            CGFloat labelHeight = CGRectGetHeight(self.bounds) / 2;
+            CGFloat labelWidth = CGRectGetWidth(self.bounds) / 2;
+            CGFloat labelX = 0, labelY = 0;
+            
+            if (index < 2) {
+                labelY = 0;
+            } else {
+                labelY = labelHeight;
+            }
+            
+            if (index % 2 == 0) {
+                labelX = 0;
+            } else {
+                labelX = labelWidth;
+            }
+            
+            label.frame = CGRectMake(labelX, labelY, labelWidth, labelHeight);
         }
-        
-        if (index % 2 == 0) {
-            labelX = 0;
-        } else {
-            labelX = labelWidth;
-        }
-        
-        label.frame = CGRectMake(labelX, labelY, labelWidth, labelHeight);
-    }
+    });
 }
 
 - (void) rotateColorAndAssign {
@@ -125,7 +129,7 @@
 #pragma mark - Gesture Handling
 
 - (void) panFired:(UIPanGestureRecognizer *)recognizer {
-    if (recognizer.state == UIGestureRecognizerStateRecognized) {
+    if (recognizer.state == UIGestureRecognizerStateChanged) {
         CGPoint translation = [recognizer translationInView:self];
         
         if ([self.delegate respondsToSelector:@selector(floatingToolbar:didTryToPanWithOffset:)]) {
@@ -137,12 +141,12 @@
 }
 
 - (void) pinchFired:(UIPinchGestureRecognizer *)recognizer {
-    if (recognizer.state == UIGestureRecognizerStateRecognized) {
+    if (recognizer.state == UIGestureRecognizerStateChanged) {
         if ([self.delegate respondsToSelector:@selector(floatingToolbar:didTryToPinchWithScale:)]) {
             [self.delegate floatingToolbar:self didTryToPinchWithScale:recognizer.scale];
         }
         
-        recognizer.scale = 1;
+        //recognizer.scale = 1;
     }
 }
 
